@@ -1,0 +1,55 @@
+{% set name = "gi-docgen" %}
+{% set version = "2022.1" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: f91d879ff28d7d5265cde84275ee510e32386bfeb7ec6203a647342aead55cec
+
+build:
+  number: 0
+  entry_points:
+    - gi-docgen=gidocgen.gidocmain:main
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  host:
+    - pip
+    - python
+    - markdown
+    - markupsafe
+    - pygments
+    - typogrify
+    - jinja2
+    - toml
+  run:
+    - python
+    - markdown
+    - markupsafe
+    - pygments
+    - typogrify
+    - jinja2
+    - toml
+
+test:
+  imports:
+    - gidocgen
+    - gidocgen.gir
+  commands:
+    - gi-docgen --help
+
+about:
+  home: The package home page
+  license: "Apache Software License or GNU General Public v3 or later (GPLv3+)"
+  license_family: GPL3
+  license_file:
+  summary: "Documentation tool for GObject-based libraries"
+  doc_url:
+  dev_url:
+
+extra:
+  recipe-maintainers:
+    - leej3
