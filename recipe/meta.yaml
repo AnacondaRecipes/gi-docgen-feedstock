@@ -10,7 +10,7 @@ source:
   sha256: f91d879ff28d7d5265cde84275ee510e32386bfeb7ec6203a647342aead55cec
 
 build:
-  number: 0
+  number: 1
   entry_points:
     - gi-docgen=gidocgen.gidocmain:main
   script: "{{ PYTHON }} -m pip install . -vv"
@@ -18,6 +18,8 @@ build:
 requirements:
   host:
     - pip
+    - setuptools
+    - wheel
     - python
     - markdown
     - markupsafe
