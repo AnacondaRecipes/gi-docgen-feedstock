@@ -14,7 +14,7 @@ build:
   entry_points:
     - gi-docgen=gidocgen.gidocmain:main
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  skip: True  # [py<37]
+  skip: True  # [py<36]
 
 requirements:
   host:
@@ -22,33 +22,39 @@ requirements:
     - setuptools
     - wheel
     - python
-    - markdown
+    - markdown >=3.2
     - markupsafe
     - pygments
     - typogrify
     - jinja2
-    - toml
+    - packaging
+    - tomli >=1,<3  # [py<311]
   run:
     - python
-    - markdown
+    - markdown >=3.2
     - markupsafe
     - pygments
     - typogrify
     - jinja2
-    - toml
     - packaging
+    - tomli >=1,<3  # [py<311]
 
 test:
   imports:
     - gidocgen
     - gidocgen.gir
     - gidocgen.core
+    - gidocgen.gidocmain
   requires:
     - pip
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
     - gi-docgen --help
+    - test -f $PREFIX/share/pkgconfig/gi-docgen.pc  # [unix]
+    - test -f $PREFIX/share/man/man1/gi-docgen.1    # [unix]
+    - if not exist "%PREFIX%\\share\\pkgconfig\\gi-docgen.pc" exit /b 1  # [win]
+    - if not exist "%PREFIX%\\share\\man\\man1\\gi-docgen.1" exit /b 1   # [win]
 
 about:
   home: https://gitlab.gnome.org/GNOME/gi-docgen
